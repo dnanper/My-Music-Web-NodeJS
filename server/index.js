@@ -1,7 +1,9 @@
 const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
+// const multer = require("multer");
 const routing = require("./routing");
+// const upload = multer();
 const middleware = require("./routing/middleware");
 const app = express();
 const PORT = 5000;
@@ -11,6 +13,9 @@ app.use(express.static(path.join(__dirname, "../client")));
 
 // allow client request to be parsed
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// allow read from form data
+// app.use(upload.none());
 
 app.use("/api", middleware, routing);
 

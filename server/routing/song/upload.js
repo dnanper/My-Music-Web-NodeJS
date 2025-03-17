@@ -29,6 +29,9 @@ module.exports = async (req, res) => {
       upload(req, res, (err) => (err ? reject(err) : resolve()));
     });
     const { artist, title } = req.body;
+    console.log("artist", artist);
+    console.log(req.file.originalname);
+    console.log("title", title);
     if (!artist || !title || !req.file) {
       return res.status(400).json({ error: "Thiếu thông tin bắt buộc" });
     }

@@ -1,4 +1,7 @@
 const db = require("../../db");
+const multer = require("multer");
+
+const upload = multer();
 
 module.exports = {
   // Get all playlists of user
@@ -16,27 +19,38 @@ module.exports = {
     }
   },
 
-  // Create new playlist
+  // Create new playlist: Read from FORM DATA -> use multer
+  // Or, can read from json, but now i'm using multer as default, so must use form data
   create: async (req, res) => {
-    const { id } = req.params;
-    const { name } = req.body;
-    if (!name) {
-      return res
-        .status(400)
-        .json({ error: "Tên playlist không được để trống" });
-    }
     try {
-      const [result] = await db.query(
-        "INSERT INTO playlists (user_id, name) VALUES (?, ?)",
-        [id, name]
-      );
-      res.json({
-        message: "Tạo playlist thành công",
-        playlistId: result.insertId,
+      upload.none()(req, res, async (err) => {
+        if (err) {
+          console.error("Lỗi multer:", err);
+          return res.status(400).json({ error: "Lỗi khi xử lý FormData" });
+        }
+
+        const { id } = req.params;
+        const { name } = req.body;
+
+        if (!name) {
+          return res
+            .status(400)
+            .json({ error: "Tên playlist không được để trống" });
+        }
+
+        const [result] = await db.query(
+          "INSERT INTO playlists (user_id, name) VALUES (?, ?)",
+          [id, name]
+        );
+
+        res.status(201).json({
+          message: "Tạo playlist thành công",
+          playlistId: result.insertId,
+        });
       });
     } catch (err) {
       console.error(err);
-      res.status(500).json({ error: "Lỗi khi tạo playlist" });
+      res.status(500).json({ error: "Lỗi server khi tạo playlist" });
     }
   },
 
@@ -61,6 +75,17 @@ module.exports = {
   add: async (req, res) => {
     const { id, playlistId, songId } = req.params;
     try {
+      const [playlist] = await db.query(
+        "SELECT id FROM playlists WHERE id = ? AND user_id = ?",
+        [playlistId, id]
+      );
+
+      if (playlist.length === 0) {
+        return res
+          .status(403)
+          .json({ error: "Bạn không có quyền truy cập playlist này" });
+      }
+
       await db.query(
         "INSERT INTO playlist_songs (user_id, playlist_id, song_id) VALUES (?, ?, ?)",
         [id, playlistId, songId]
