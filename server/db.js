@@ -1,4 +1,4 @@
-const mysql = require("mysql2");
+const mysql = require("mysql2/promise");
 
 const pool = mysql.createPool({
   host: "127.0.0.1",
@@ -11,13 +11,14 @@ const pool = mysql.createPool({
   queueLimit: 0,
 });
 
-pool.getConnection((err, connection) => {
-  if (err) {
-    console.error("Không thể kết nối MySQL:", err);
-  } else {
+(async () => {
+  try {
+    const connection = await pool.getConnection();
     console.log("Kết nối MySQL thành công!");
-    connection.release(); // Giải phóng kết nối sau khi kiểm tra
+    connection.release();
+  } catch (err) {
+    console.error("Không thể kết nối MySQL:", err);
   }
-});
+})();
 
 module.exports = pool;

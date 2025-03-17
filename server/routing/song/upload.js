@@ -1,11 +1,17 @@
 const db = require("../../db");
 const multer = require("multer");
-const fs = require("fs");
+const fs = require("fs").promises;
+const path = require("path");
 
 const uploadDir = "uploads/songs";
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
+
+(async () => {
+  try {
+    await fs.mkdir(uploadDir, { recursive: true });
+  } catch (err) {
+    console.error("Lỗi khi tạo thư mục upload:", err);
+  }
+})();
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -17,29 +23,28 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage }).single("file");
 
-module.exports = (req, res) => {
-  upload(req, res, (err) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).json({ error: "Failed to upload file" });
-    }
-
+module.exports = async (req, res) => {
+  try {
+    await new Promise((resolve, reject) => {
+      upload(req, res, (err) => (err ? reject(err) : resolve()));
+    });
     const { artist, title } = req.body;
     if (!artist || !title || !req.file) {
-      return res.status(400).json({ error: "Missing required fields" });
+      return res.status(400).json({ error: "Thiếu thông tin bắt buộc" });
     }
 
     const filePath = "/uploads/songs/" + req.file.originalname;
     const query =
       "INSERT INTO songs (title, artist, file_path) VALUES (?, ?, ?)";
-    db.query(query, [title, artist, filePath], (err, results) => {
-      if (err) {
-        console.error(err);
-        return res.status(500).json({ error: "Failed to upload file" });
-      }
-      res
-        .status(200)
-        .json({ message: "Upload successful", songId: results.insertId });
+
+    const [result] = await db.execute(query, [title, artist, filePath]);
+
+    res.status(200).json({
+      message: "Upload thành công!",
+      songId: result.insertId,
     });
-  });
+  } catch (err) {
+    console.error("Lỗi trong quá trình upload:", err);
+    res.status(500).json({ error: "Lỗi khi upload file" });
+  }
 };

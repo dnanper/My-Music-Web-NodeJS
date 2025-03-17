@@ -10,6 +10,7 @@ router.post("/upload", upload); // POST - http://localhost:5000/api/song/upload
 router.get("/:id", view); // GET - http://localhost:5000/api/song/id : get song by id
 router.get("/", view); // GET - http://localhost:5000/api/song/ : get all songs
 router.get("/download/:id", download); // GET - http://localhost:5000/api/song/download/id : download song by id
+router.get("/play/:id", play); // GET - http://localhost:5000/api/song/play/id : play song by id
 router.delete("/:id", del); // DELETE - http://localhost:5000/api/song/id : delete song by id
 
 module.exports = router;
