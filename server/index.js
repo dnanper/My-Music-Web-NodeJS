@@ -11,6 +11,13 @@ const PORT = 5000;
 // allow client to be served
 app.use(express.static(path.join(__dirname, "../client")));
 
+////// HAVE TEST YET
+// allow client to be served, if no API route is found
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client/", "index.html"));
+});
+///////
+
 // allow client request to be parsed
 app.use(bodyParser.urlencoded({ extended: true }));
 
