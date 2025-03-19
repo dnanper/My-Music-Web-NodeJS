@@ -110,3 +110,5 @@ var API = {
       .then((response) => response.data);
   },
 };
+
+export default API;

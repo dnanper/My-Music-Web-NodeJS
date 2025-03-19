@@ -4,10 +4,13 @@ import Login from "../auth/login";
 import Library from "../library";
 import Player from "../player";
 import Playlist from "../playlist";
-import Favorites from "../favorites";
+import Favorites from "../favourites";
+import Sidebar from "../../components/sidebar";
+import "./home.css";
 
 export default function Home() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loginError, setLoginError] = useState("");
 
   useEffect(() => {
     const storedUser = localStorage.getItem("authenticatedUser");
@@ -28,13 +31,14 @@ export default function Home() {
   };
 
   return !isAuthenticated ? (
-    <Login onLogin={handleLogin} />
+    <Login onLogin={handleLogin} errorMessage={loginError} />
   ) : (
     <Router>
       <div className="main-body">
         <Sidebar />
         <Routes>
           <Route path="/" element={<Library />} />
+          <Route path="/library" element={<Library />} />
           <Route path="/player" element={<Player />} />
           <Route path="/favorites" element={<Favorites />} />
           <Route path="/playlist" element={<Playlist />} />

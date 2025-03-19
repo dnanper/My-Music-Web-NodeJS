@@ -1,6 +1,32 @@
 const db = require("../../db");
 const path = require("path");
 const fs = require("fs");
+const axios = require("axios");
+
+async function getSongImage(title, artist) {
+  const searchUrl = "https://itunes.apple.com/search";
+  const searchTerm = `${title} ${artist}`.split(" ").join("+");
+  const requestUrl = `${searchUrl}?term=${searchTerm}&media=music&limit=1`;
+
+  // console.log("🔎 URL tìm kiếm ảnh:", requestUrl);
+  try {
+    const response = await axios.get(requestUrl, {
+      timeout: 5000,
+    });
+    // console.log(response.data.results.length);
+    if (response.data.results.length > 0) {
+      const artworkUrl = response.data.results[0].artworkUrl100.replace(
+        "100x100",
+        "500x500"
+      );
+      // console.log("✅ Link ảnh:", artworkUrl);
+      return artworkUrl;
+    }
+  } catch (err) {
+    console.error("Lỗi lấy ảnh từ iTunes:", err);
+  }
+  return null;
+}
 
 module.exports = async (req, res) => {
   try {
@@ -12,7 +38,7 @@ module.exports = async (req, res) => {
 
     // Lấy đường dẫn file từ database
     const [results] = await db.execute(
-      "SELECT file_path FROM songs WHERE id = ?",
+      "SELECT file_path, title, artist FROM songs WHERE id = ?",
       [songId]
     );
 
@@ -29,6 +55,8 @@ module.exports = async (req, res) => {
     if (!fs.existsSync(filePath)) {
       return res.status(404).json({ error: "File không tồn tại" });
     }
+
+    const imageUrl = await getSongImage(song.title, song.artist);
 
     const stat = fs.statSync(filePath);
     const fileSize = stat.size;
@@ -60,6 +88,7 @@ module.exports = async (req, res) => {
       res.writeHead(200, {
         "Content-Length": fileSize,
         "Content-Type": "audio/mpeg",
+        "Song-Image": imageUrl,
       });
       fs.createReadStream(filePath).pipe(res);
     }
