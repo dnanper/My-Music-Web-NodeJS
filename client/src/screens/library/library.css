@@ -4,15 +4,17 @@
   padding: 3%;
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
+  gap: 40px;
+  justify-content: left;
   overflow-y: auto;
 }
 
 .playlist-card {
   position: relative;
   width: 180px; /* Đặt kích thước cố định */
-  height: 250px; /* Đảm bảo không bị kéo dài */
+  height: 250px;
+  /* width: 15%;
+  height: 35%; */
   border-radius: 15px;
   background-color: rgb(30, 42, 62);
   border: 1px solid rgba(54, 69, 98, 0.18);
@@ -21,10 +23,15 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  background: linear-gradient(
+  /* background: linear-gradient(
     75deg,
     rgb(40, 58, 88) 0%,
     rgba(54, 69, 98, 0) 100%
+  ); */
+  background: linear-gradient(
+    0deg,
+    rgb(221, 155, 109) 0%,
+    rgba(184, 103, 46, 0) 150% /* Màu cam nhạt mờ dần xuống */
   );
   transition: all 0.2s ease;
   cursor: pointer;
@@ -43,8 +50,8 @@
 
 .playlist-title {
   font-weight: 800;
-  font-size: 14px;
-  color: #c4d0e3;
+  font-size: 16px;
+  color: #283853;
   margin-top: 10px;
   text-align: center;
   white-space: nowrap;
@@ -53,12 +60,31 @@
 }
 
 .playlist-subtitle {
-  font-weight: 400;
-  font-size: 12px;
+  font-weight: 600;
+  font-size: 14px;
   margin: 5px 0 0;
-  color: #c4d0e37c;
+  color: #06152d7c;
   text-align: center;
 }
+
+.favourite-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
+.fav-icon {
+  font-size: 20px;
+  color: #ccc;
+}
+
+.fav-icon.active {
+  color: rgb(239, 65, 77);
+}
+
 /* Responsive để tự điều chỉnh số cột khi thu nhỏ màn hình */
 @media (max-width: 1200px) {
   .playlist-card {

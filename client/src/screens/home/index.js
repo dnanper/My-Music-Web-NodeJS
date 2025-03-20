@@ -40,7 +40,7 @@ export default function Home() {
           <Route path="/" element={<Library />} />
           <Route path="/library" element={<Library />} />
           <Route path="/player" element={<Player />} />
-          <Route path="/favorites" element={<Favorites />} />
+          <Route path="/favourites" element={<Favorites />} />
           <Route path="/playlist" element={<Playlist />} />
         </Routes>
       </div>

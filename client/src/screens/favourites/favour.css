@@ -1,0 +1,115 @@
+.favour-body {
+  width: 100%;
+  height: 90%;
+  padding: 3%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  justify-content: left;
+  overflow-y: auto;
+}
+
+.playlist-card {
+  position: relative;
+  width: 180px; /* Đặt kích thước cố định */
+  height: 250px;
+  /* width: 15%;
+  height: 35%; */
+  border-radius: 15px;
+  background-color: rgb(30, 42, 62);
+  border: 1px solid rgba(54, 69, 98, 0.18);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  /* background: linear-gradient(
+    75deg,
+    rgb(40, 58, 88) 0%,
+    rgba(54, 69, 98, 0) 100%
+  ); */
+  background: linear-gradient(
+    0deg,
+    rgb(221, 155, 109) 0%,
+    rgba(184, 103, 46, 0) 150% /* Màu cam nhạt mờ dần xuống */
+  );
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.playlist-card:hover {
+  transform: scale(1.05);
+}
+
+.playlist-image {
+  width: 100%;
+  aspect-ratio: 1 / 1; /* Giữ ảnh vuông */
+  border-radius: 10px;
+  object-fit: cover; /* Đảm bảo ảnh không bị méo */
+}
+
+.song-info {
+  margin: 0px 0px 0px 0px;
+}
+
+.playlist-title {
+  font-weight: 800;
+  font-size: 16px;
+  color: #283853;
+  margin-top: 10px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.playlist-subtitle {
+  font-weight: 600;
+  font-size: 14px;
+  margin: 5px 0 0;
+  color: #06152d7c;
+  text-align: center;
+}
+
+.favourite-button-f {
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
+.liked-icon {
+  font-size: 20px;
+  color: #ccc;
+}
+
+.liked-icon.active {
+  color: rgb(239, 65, 77);
+}
+
+/* Responsive để tự điều chỉnh số cột khi thu nhỏ màn hình */
+@media (max-width: 1200px) {
+  .playlist-card {
+    width: calc(25% - 1.5%); /* 4 card mỗi hàng */
+  }
+}
+
+@media (max-width: 900px) {
+  .playlist-card {
+    width: calc(33.33% - 1.5%); /* 3 card mỗi hàng */
+  }
+}
+
+@media (max-width: 600px) {
+  .playlist-card {
+    width: calc(50% - 1.5%); /* 2 card mỗi hàng */
+  }
+}
+
+@media (max-width: 400px) {
+  .playlist-card {
+    width: 100%; /* 1 card mỗi hàng */
+  }
+}

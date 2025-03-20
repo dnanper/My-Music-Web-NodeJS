@@ -1,7 +1,34 @@
 const db = require("../../db");
 const multer = require("multer");
+const axios = require("axios");
+const path = require("path");
 
 const upload = multer();
+
+async function getSongImage(title, artist) {
+  const searchUrl = "https://itunes.apple.com/search";
+  const searchTerm = `${title} ${artist}`.split(" ").join("+");
+  const requestUrl = `${searchUrl}?term=${searchTerm}&media=music&limit=1`;
+
+  // console.log("🔎 URL tìm kiếm ảnh:", requestUrl);
+  try {
+    const response = await axios.get(requestUrl, {
+      timeout: 5000,
+    });
+    // console.log(response.data.results.length);
+    if (response.data.results.length > 0) {
+      const artworkUrl = response.data.results[0].artworkUrl100.replace(
+        "100x100",
+        "300x300"
+      );
+      // console.log("✅ Link ảnh:", artworkUrl);
+      return artworkUrl;
+    }
+  } catch (err) {
+    console.error("Lỗi lấy ảnh từ iTunes:", err);
+  }
+  return null;
+}
 
 module.exports = {
   // Get all playlists of user
@@ -12,6 +39,23 @@ module.exports = {
         "SELECT * FROM playlists WHERE user_id = ?",
         [id]
       );
+      for (let i = 0; i < playlists.length; i++) {
+        // console.log("playlist", playlists[i]);
+        const playlistId = playlists[i].id;
+        const [songs] = await db.query(
+          "SELECT s.* FROM songs s INNER JOIN playlist_songs ps ON s.id = ps.song_id WHERE ps.playlist_id = ? ORDER BY ps.id LIMIT 1",
+          [playlistId]
+        );
+
+        if (songs.length > 0) {
+          const song = songs[0];
+          const imageUrl = await getSongImage(song.title, song.artist);
+          playlists[i].coverImage = imageUrl || "/default-cover.jpg";
+        } else {
+          playlists[i].coverImage = "/default-cover.jpg";
+        }
+      }
+
       res.json(playlists);
     } catch (err) {
       console.error(err);
