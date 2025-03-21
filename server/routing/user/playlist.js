@@ -101,11 +101,17 @@ module.exports = {
   // Get songs of playlist
   view: async (req, res) => {
     const { id, playlistId } = req.params;
+    console.log("Request received for user:", id, "playlist:", playlistId);
     try {
       const [songs] = await db.query(
         "SELECT s.* FROM songs s INNER JOIN playlist_songs ps ON s.id = ps.song_id WHERE ps.playlist_id = ? AND ps.user_id = ?",
         [playlistId, id]
       );
+      for (let i = 0; i < songs.length; i++) {
+        const song = songs[i];
+        const imageUrl = await getSongImage(song.title, song.artist);
+        songs[i].image = imageUrl || "/default-cover.jpg";
+      }
       res.json(songs);
     } catch (err) {
       console.error(err);

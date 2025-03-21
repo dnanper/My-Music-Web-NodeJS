@@ -1,3 +1,4 @@
+import { MusicProvider } from "../../context";
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "../auth/login";
@@ -11,6 +12,7 @@ import "./home.css";
 export default function Home() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loginError, setLoginError] = useState("");
+  const [selectedPlaylist, setSelectedPlaylist] = useState(false);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("authenticatedUser");
@@ -33,18 +35,23 @@ export default function Home() {
   return !isAuthenticated ? (
     <Login onLogin={handleLogin} errorMessage={loginError} />
   ) : (
-    <Router>
-      <div className="main-body">
-        <Sidebar />
-        <Routes>
-          <Route path="/" element={<Library />} />
-          <Route path="/library" element={<Library />} />
-          <Route path="/player" element={<Player />} />
-          <Route path="/favourites" element={<Favorites />} />
-          <Route path="/playlist" element={<Playlist />} />
-        </Routes>
-      </div>
-    </Router>
+    <MusicProvider>
+      <Router>
+        <div className="main-body">
+          <Sidebar isPlayerDisabled={!selectedPlaylist} />
+          <Routes>
+            <Route path="/" element={<Library />} />
+            <Route path="/library" element={<Library />} />
+            <Route path="/favourites" element={<Favorites />} />
+            <Route
+              path="/playlist"
+              element={<Playlist setSelectPlaylist={setSelectedPlaylist} />}
+            />
+            <Route path="/player" element={<Player />} />
+          </Routes>
+        </div>
+      </Router>
+    </MusicProvider>
   );
 }
 

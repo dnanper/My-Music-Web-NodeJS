@@ -56,7 +56,7 @@ module.exports = async (req, res) => {
       return res.status(404).json({ error: "File không tồn tại" });
     }
 
-    const imageUrl = await getSongImage(song.title, song.artist);
+    // const imageUrl = await getSongImage(song.title, song.artist);
 
     const stat = fs.statSync(filePath);
     const fileSize = stat.size;
@@ -88,7 +88,7 @@ module.exports = async (req, res) => {
       res.writeHead(200, {
         "Content-Length": fileSize,
         "Content-Type": "audio/mpeg",
-        "Song-Image": imageUrl,
+        // "Song-Image": imageUrl,
       });
       fs.createReadStream(filePath).pipe(res);
     }

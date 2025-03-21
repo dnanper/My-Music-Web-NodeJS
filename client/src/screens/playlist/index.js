@@ -1,21 +1,33 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import apiClient from "../../API";
+import API from "../../API";
 import "./playlist.css";
+import { useMusic } from "../../context";
 
-export default function Playlist() {
+export default function Playlist({ setSelectPlaylist }) {
+  const { setTracks, setCurrentTrack, setCurrentIndex } = useMusic();
   const [playlists, setPlaylists] = useState([]);
   const navigate = useNavigate();
   const userId = 1;
 
   useEffect(() => {
-    apiClient.getAllPlaylist(userId).then((data) => {
+    API.getAllPlaylist(userId).then((data) => {
       setPlaylists(data);
     });
   }, []);
 
   const handlePlaylistClick = (playlist) => {
-    navigate("/player", { state: { id: playlist.id } });
+    API.getPlaylist(playlist.user_id, playlist.id)
+      .then((res) => {
+        if (Array.isArray(res)) {
+          setTracks(res);
+          setCurrentTrack(res.length > 0 ? res[0] : null);
+          setCurrentIndex(0);
+        }
+      })
+      .catch((error) => console.error("Lỗi tải playlist:", error));
+    setSelectPlaylist(true);
+    navigate("/player");
   };
 
   return (

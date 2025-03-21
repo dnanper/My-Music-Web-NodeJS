@@ -17,7 +17,7 @@ router.delete("/:id/favour/:songId", favour.remove); // DEL - http://localhost:5
 router.get("/:id/playlist", playlist.viewAll); // GET - http://localhost:5000/api/user/id/playlist : get user playlists
 router.post("/:id/playlist", playlist.create); // POST - http://localhost:5000/api/user/id/playlist : create new playlist
 router.delete("/:id/playlist/:playlistId", playlist.delete); // DEL - http://localhost:5000/api/user/id/playlist/playlistId : delete a playlist
-router.get("/:id/playlist/playlistId", playlist.view); // GET - http://localhost:5000/api/user/id/playlist/playlistId : get playlist by id
+router.get("/:id/playlist/:playlistId", playlist.view); // GET - http://localhost:5000/api/user/id/playlist/playlistId : get playlist by id
 router.post("/:id/playlist/:playlistId/:songId", playlist.add); // POST - http://localhost:5000/api/user/id/playlist/playlistId/songId : add song to playlist
 router.delete("/:id/playlist/:playlistId/:songId", playlist.remove); // DEL - http://localhost:5000/api/user/id/playlist/playlistId/songId : remove song from playlist
 router.get("/:id/playlist/:playlistId/play", playlist.play); // GET - http://localhost:5000/api/user/id/playlist/playlistId/play : play playlist

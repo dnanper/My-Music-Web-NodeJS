@@ -6,7 +6,7 @@ import { FaMusic, FaPlay, FaSignOutAlt } from "react-icons/fa";
 import { IoLibrary } from "react-icons/io5";
 // import API from "../../API";
 
-export default function Sidebar() {
+export default function Sidebar({ isPlayerDisabled }) {
   const [profileImage, setProfileImage] = useState(
     "https://via.placeholder.com/100" // Placeholder khi không có ảnh
   );
@@ -22,13 +22,18 @@ export default function Sidebar() {
       {/* <img src={profileImage} className="profile-img" alt="profile" /> */}
       <div>
         <SidebarButton title="Library" to="/library" icon={<IoLibrary />} />
-        <SidebarButton title="Player" to="/player" icon={<FaPlay />} />
         <SidebarButton
           title="Favorites"
           to="/favourites"
           icon={<MdFavorite />}
         />
         <SidebarButton title="Playlist" to="/playlist" icon={<FaMusic />} />
+        <SidebarButton
+          title="Player"
+          to={isPlayerDisabled ? "#" : "/player"}
+          icon={<FaPlay />}
+          className={isPlayerDisabled ? "disabled" : ""}
+        />
       </div>
       <SidebarButton title="Sign Out" to="" icon={<FaSignOutAlt />} />
     </div>

@@ -20,7 +20,9 @@ var API = {
       .then((response) => response.data);
   },
   playSong: function (id) {
-    return this.api.get(`/song/play/${id}`).then((response) => response.data);
+    return this.api
+      .get(`/song/play/${id}`, { responseType: "blob" }) // Lấy .mp3
+      .then((response) => response.data);
   },
   download: function (id) {
     return this.api
