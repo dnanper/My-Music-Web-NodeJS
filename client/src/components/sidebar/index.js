@@ -3,6 +3,7 @@ import "./sidebar.css";
 import SidebarButton from "./sidebarButton";
 import { MdFavorite } from "react-icons/md";
 import { FaMusic, FaPlay, FaSignOutAlt } from "react-icons/fa";
+import { FaUpload } from "react-icons/fa";
 import { IoLibrary } from "react-icons/io5";
 // import API from "../../API";
 
@@ -27,6 +28,7 @@ export default function Sidebar({ isPlayerDisabled }) {
           to="/favourites"
           icon={<MdFavorite />}
         />
+        <SidebarButton title="Upload" to="/upload" icon={<FaUpload />} />
         <SidebarButton title="Playlist" to="/playlist" icon={<FaMusic />} />
         <SidebarButton
           title="Player"

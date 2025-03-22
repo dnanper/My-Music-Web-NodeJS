@@ -1,37 +1,26 @@
 .favour-body {
   width: 100%;
-  height: 90%;
   padding: 3%;
   display: flex;
   flex-wrap: wrap;
-  gap: 40px;
-  justify-content: left;
+  gap: 50px; /* Khoảng cách giữa các card */
+  justify-content: flex-start;
+  align-content: flex-start; /* Giúp các hàng tự động xuống */
   overflow-y: auto;
+  max-height: 90vh; /* Giới hạn chiều cao tối đa */
+  min-height: 100px; /* Chiều cao tối thiểu */
 }
 
 .playlist-card {
-  position: relative;
-  width: 180px; /* Đặt kích thước cố định */
-  height: 250px;
-  /* width: 15%;
-  height: 35%; */
+  flex: 1 1 calc(20% - 20px); /* Đặt tỷ lệ co giãn, chiếm 20% hàng ngang */
+  max-width: 200px; /* Giới hạn tối đa */
+  min-width: 150px; /* Giới hạn tối thiểu */
+  height: 280px !important;
   border-radius: 15px;
-  background-color: rgb(30, 42, 62);
-  border: 1px solid rgba(54, 69, 98, 0.18);
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  /* background: linear-gradient(
-    75deg,
-    rgb(40, 58, 88) 0%,
-    rgba(54, 69, 98, 0) 100%
-  ); */
   background: linear-gradient(
     0deg,
     rgb(221, 155, 109) 0%,
-    rgba(184, 103, 46, 0) 150% /* Màu cam nhạt mờ dần xuống */
+    rgba(184, 103, 46, 0) 150%
   );
   transition: all 0.2s ease;
   cursor: pointer;

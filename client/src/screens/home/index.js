@@ -6,6 +6,7 @@ import Library from "../library";
 import Player from "../player";
 import Playlist from "../playlist";
 import Favorites from "../favourites";
+import Upload from "../upload";
 import Sidebar from "../../components/sidebar";
 import "./home.css";
 
@@ -43,6 +44,8 @@ export default function Home() {
             <Route path="/" element={<Library />} />
             <Route path="/library" element={<Library />} />
             <Route path="/favourites" element={<Favorites />} />
+            <Route path="/upload" element={<Upload />} />
+
             <Route
               path="/playlist"
               element={<Playlist setSelectPlaylist={setSelectedPlaylist} />}

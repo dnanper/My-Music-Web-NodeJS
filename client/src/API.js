@@ -24,10 +24,22 @@ var API = {
       .get(`/song/play/${id}`, { responseType: "blob" }) // Lấy .mp3
       .then((response) => response.data);
   },
-  download: function (id) {
+  download: function (id, title) {
     return this.api
-      .get(`/song/download/${id}`, { responseType: "" }) // type?
-      .then((response) => response.data);
+      .get(`/song/download/${id}`, { responseType: "blob" }) // Nhận dữ liệu dưới dạng Blob
+      .then((response) => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", `${title}.mp3`); // Tên file tải xuống
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      })
+      .catch((error) => {
+        console.error("Lỗi khi tải bài hát:", error);
+        throw error;
+      });
   },
   deleteSong: function (id) {
     return this.api.delete(`/song/${id}`).then((response) => response.data);

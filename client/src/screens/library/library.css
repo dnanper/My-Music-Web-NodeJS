@@ -1,37 +1,26 @@
 .library-body {
   width: 100%;
-  height: 90%;
   padding: 3%;
   display: flex;
   flex-wrap: wrap;
-  gap: 40px;
-  justify-content: left;
+  gap: 50px; /* Khoảng cách giữa các card */
+  justify-content: flex-start;
+  align-content: flex-start; /* Giúp các hàng tự động xuống */
   overflow-y: auto;
+  max-height: 90vh; /* Giới hạn chiều cao tối đa */
+  min-height: 100px; /* Chiều cao tối thiểu */
 }
 
 .playlist-card {
-  position: relative;
-  width: 180px; /* Đặt kích thước cố định */
-  height: 250px;
-  /* width: 15%;
-  height: 35%; */
+  flex: 1 1 calc(20% - 20px); /* Đặt tỷ lệ co giãn, chiếm 20% hàng ngang */
+  max-width: 200px; /* Giới hạn tối đa */
+  min-width: 150px; /* Giới hạn tối thiểu */
+  height: 280px !important;
   border-radius: 15px;
-  background-color: rgb(30, 42, 62);
-  border: 1px solid rgba(54, 69, 98, 0.18);
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  /* background: linear-gradient(
-    75deg,
-    rgb(40, 58, 88) 0%,
-    rgba(54, 69, 98, 0) 100%
-  ); */
   background: linear-gradient(
     0deg,
     rgb(221, 155, 109) 0%,
-    rgba(184, 103, 46, 0) 150% /* Màu cam nhạt mờ dần xuống */
+    rgba(184, 103, 46, 0) 150%
   );
   transition: all 0.2s ease;
   cursor: pointer;
@@ -65,6 +54,8 @@
   margin: 5px 0 0;
   color: #06152d7c;
   text-align: center;
+  white-space: normal; /* Cho phép chữ xuống dòng */
+  word-break: break-word; /* Đảm bảo chữ dài không bị tràn */
 }
 
 .favourite-button {
@@ -85,19 +76,135 @@
   color: rgb(239, 65, 77);
 }
 
+.download-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #634ae2;
+  font-size: 1.2rem;
+  position: absolute;
+  bottom: 0px; /* Đặt xuống gần cạnh dưới */
+  right: 2px; /* Đặt sang phải */
+}
+
+.download-button:hover {
+  color: #1a73e8;
+}
+
+.download-icon {
+  transition: transform 0.2s ease-in-out;
+}
+
+.download-button:hover .download-icon {
+  transform: scale(1.2);
+}
+
+.add-playlist-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #9a1131;
+  font-size: 1.2rem;
+  position: absolute;
+  bottom: 0px; /* Đặt xuống gần cạnh dưới */
+  left: 2px; /* Đặt sang phải */
+}
+
+.add-playlist-button:hover {
+  color: #e81ada;
+}
+
+.playlist-icon {
+  transition: transform 0.2s ease-in-out;
+}
+
+.add-playlist-button:hover .playlist-icon {
+  transform: scale(1.2);
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(49, 48, 48, 0.7); /* Làm mờ nền */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: rgba(20, 20, 40, 0.95); /* Màu xanh đậm như upload modal */
+  border-radius: 15px;
+  padding: 20px;
+  color: #f3ccff; /* Màu chữ hồng nhạt */
+  text-align: center;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  width: 300px;
+}
+
+.modal-content h2 {
+  color: #eb99ff; /* Màu tiêu đề hồng sáng hơn */
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.playlist-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.playlist-item {
+  font-size: 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.playlist-list li {
+  background-color: rgba(148, 143, 143, 0.514);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.playlist-list li:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+.close-button {
+  background-color: #db77df;
+  color: rgba(255, 255, 255, 0.63);
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 15px;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.close-button:hover {
+  background-color: #a107a1;
+}
+
 /* Responsive để tự điều chỉnh số cột khi thu nhỏ màn hình */
+
 @media (max-width: 1200px) {
   .playlist-card {
-    width: calc(25% - 1.5%); /* 4 card mỗi hàng */
+    flex: 1 1 calc(25% - 20px); /* 4 card mỗi hàng */
   }
 }
 
 @media (max-width: 900px) {
   .playlist-card {
-    width: calc(33.33% - 1.5%); /* 3 card mỗi hàng */
+    flex: 1 1 calc(33.33% - 20px); /* 3 card mỗi hàng */
   }
 }
-
 @media (max-width: 600px) {
   .playlist-card {
     width: calc(50% - 1.5%); /* 2 card mỗi hàng */

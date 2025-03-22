@@ -1,32 +1,45 @@
 import React, { useState, useEffect } from "react";
 import API from "../../API";
 import { useNavigate } from "react-router-dom";
-import { FaMusic, FaHeart, FaRegHeart } from "react-icons/fa"; // Import icon trái tim
+import {
+  FaMusic,
+  FaHeart,
+  FaRegHeart,
+  FaDownload,
+  FaPlus,
+} from "react-icons/fa";
 import "./library.css";
 
 export default function MusicLibrary() {
   const [songs, setSongs] = useState([]);
   const [favourites, setFavourites] = useState(new Set());
+  const [playlists, setPlaylists] = useState([]);
+  const [selectedSong, setSelectedSong] = useState(null);
   const navigate = useNavigate();
-  const userId = 1; // Tạm thời đặt userId cố định - yêu cầu của Lab không quan trọng user
+  const userId = 1;
 
-  // Lấy danh sách bài hát
+  // Fetch danh sách bài hát
   useEffect(() => {
     API.getAllSong()
-      .then((data) => {
-        setSongs(data);
-      })
+      .then((data) => setSongs(data))
       .catch((error) => console.error("Lỗi khi lấy danh sách bài hát:", error));
   }, []);
 
-  // Lấy danh sách bài hát yêu thích của user
+  // Fetch danh sách bài hát yêu thích
   useEffect(() => {
     API.getFavour(userId)
-      .then((data) => {
-        setFavourites(new Set(data.map((song) => song.id))); // Chuyển danh sách thành Set để tìm kiếm nhanh
-      })
+      .then((data) => setFavourites(new Set(data.map((song) => song.id))))
       .catch((error) =>
         console.error("Lỗi khi lấy danh sách bài hát yêu thích:", error)
+      );
+  }, []);
+
+  // Fetch danh sách playlist
+  useEffect(() => {
+    API.getAllPlaylist(userId)
+      .then((data) => setPlaylists(data))
+      .catch((error) =>
+        console.error("Lỗi khi lấy danh sách playlist:", error)
       );
   }, []);
 
@@ -34,7 +47,11 @@ export default function MusicLibrary() {
     // navigate("/player", { state: { id: id } });
   };
 
-  // Xử lý thêm/xóa bài hát khỏi danh sách yêu thích
+  const downloadSong = (songId, title) => {
+    API.download(songId, title);
+  };
+
+  // Toggle bài hát yêu thích
   const toggleFavourite = (songId) => {
     if (favourites.has(songId)) {
       API.removeFavour(userId, songId).then(() => {
@@ -48,6 +65,18 @@ export default function MusicLibrary() {
       API.addFavour(userId, songId).then(() => {
         setFavourites((prev) => new Set(prev).add(songId));
       });
+    }
+  };
+
+  // Thêm bài hát vào playlist
+  const addToPlaylist = (playlistId) => {
+    if (selectedSong) {
+      API.addSong(userId, playlistId, selectedSong)
+        .then(() => {
+          alert("Bài hát đã được thêm vào playlist!");
+          setSelectedSong(null);
+        })
+        .catch((error) => console.error("Lỗi khi thêm vào playlist:", error));
     }
   };
 
@@ -83,7 +112,7 @@ export default function MusicLibrary() {
             <button
               className="favourite-button"
               onClick={(e) => {
-                e.stopPropagation(); // Ngăn chặn event onClick của playSong
+                e.stopPropagation();
                 toggleFavourite(song.id);
               }}
             >
@@ -93,9 +122,61 @@ export default function MusicLibrary() {
                 <FaRegHeart className="fav-icon" />
               )}
             </button>
+
+            {/* Nút Download */}
+            <button
+              className="download-button"
+              onClick={(e) => {
+                e.stopPropagation();
+                downloadSong(song.id, song.title);
+              }}
+            >
+              <FaDownload className="download-icon" />
+            </button>
+
+            {/* Nút Thêm vào Playlist */}
+            <button
+              className="add-playlist-button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setSelectedSong(song.id);
+              }}
+            >
+              <FaPlus className="playlist-icon" />
+            </button>
           </div>
         ))}
       </div>
+
+      {/* Modal chọn playlist */}
+      {selectedSong && (
+        <div className="modal-overlay" onClick={() => setSelectedSong(null)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h2>Chọn Playlist</h2>
+            <ul className="playlist-list">
+              {playlists.length > 0 ? (
+                playlists.map((playlist) => (
+                  <li
+                    className="playlist-item"
+                    key={playlist.id}
+                    onClick={() => addToPlaylist(playlist.id)}
+                  >
+                    {playlist.name}
+                  </li>
+                ))
+              ) : (
+                <li>Không có playlist nào</li>
+              )}
+            </ul>
+            <button
+              className="close-button"
+              onClick={() => setSelectedSong(null)}
+            >
+              Đóng
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

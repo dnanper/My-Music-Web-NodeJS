@@ -50,9 +50,9 @@ module.exports = {
         if (songs.length > 0) {
           const song = songs[0];
           const imageUrl = await getSongImage(song.title, song.artist);
-          playlists[i].coverImage = imageUrl || "/default-cover.jpg";
+          playlists[i].coverImage = imageUrl || null;
         } else {
-          playlists[i].coverImage = "/default-cover.jpg";
+          playlists[i].coverImage = null;
         }
       }
 

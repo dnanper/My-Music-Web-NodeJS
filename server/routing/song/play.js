@@ -48,7 +48,7 @@ module.exports = async (req, res) => {
 
     const filePath = path.resolve(
       __dirname,
-      "../../../uploads/songs",
+      "../../uploads/songs",
       path.basename(results[0].file_path)
     );
 

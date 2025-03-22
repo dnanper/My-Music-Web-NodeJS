@@ -1,0 +1,126 @@
+.upload-container {
+  max-width: 700px; /* Tăng chiều rộng */
+  width: 90%; /* Đảm bảo thích ứng với màn hình nhỏ */
+  margin: 50px auto;
+  padding: 40px; /* Tăng padding cho thoáng */
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  backdrop-filter: blur(15px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.upload-container h2 {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+  color: #d89dff;
+  text-transform: uppercase;
+}
+
+.upload-container p {
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.upload-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.upload-container input {
+  width: 70%;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  text-align: center;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.upload-container input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.upload-container input:focus {
+  background: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 10px rgba(255, 157, 255, 0.5);
+}
+
+.upload-container button {
+  padding: 12px;
+  background: #d89dff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.upload-container .label {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #d89dff;
+  margin-bottom: 5px;
+  display: block;
+  text-transform: uppercase;
+}
+
+.upload-container button:hover {
+  background: #d89dff;
+  transform: translateY(-2px);
+}
+
+.upload-container .file-upload {
+  padding: 15px;
+  border: 2px dashed rgba(255, 255, 255, 0.5);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.3s ease;
+}
+
+.upload-container .file-upload:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.custom-file-upload {
+  display: inline-block;
+  padding: 12px 20px;
+  background: #a06cd5;
+  color: white;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.custom-file-upload:hover {
+  background: #8e5ab5;
+  transform: translateY(-2px);
+}
+
+.custom-file-upload input {
+  display: none; /* Ẩn input mặc định */
+}
+
+.file-name {
+  display: block;
+  margin-top: 10px;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: bold;
+  text-align: center;
+}
