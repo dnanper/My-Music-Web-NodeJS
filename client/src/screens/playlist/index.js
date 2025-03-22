@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { FaTrash } from "react-icons/fa";
 import API from "../../API";
 import "./playlist.css";
 import { useMusic } from "../../context";
@@ -54,16 +55,18 @@ export default function Playlist({ setSelectPlaylist }) {
       .catch((error) => console.error("Lỗi tạo playlist:", error));
   };
 
+  const deletePlaylist = (playlistId) => {
+    API.deletePlaylist(userId, playlistId)
+      .then(() => {
+        setPlaylists(
+          playlists.filter((playlist) => playlist.id !== playlistId)
+        );
+      })
+      .catch((error) => console.error("Lỗi xóa playlist:", error));
+  };
+
   return (
     <div className="screen-container">
-      <div className="playlist-header">
-        <button
-          className="add-playlist-button"
-          onClick={() => setShowModal(true)}
-        >
-          + Add
-        </button>
-      </div>
       <div className="playlist-container">
         {playlists.map((playlist) => (
           <div
@@ -84,10 +87,26 @@ export default function Playlist({ setSelectPlaylist }) {
                   : "Today"}
               </p>
             </div>
+            <button
+              className="delete-playlist-button"
+              onClick={(e) => {
+                e.stopPropagation();
+                deletePlaylist(playlist.id);
+              }}
+            >
+              <FaTrash className="delete-playlist-icon" />
+            </button>
           </div>
         ))}
       </div>
-
+      {/* <div className="playlist-header"> */}{" "}
+      <button
+        className="add-playlist-button"
+        onClick={() => setShowModal(true)}
+      >
+        + Add
+      </button>
+      {/* </div> */}
       {/* Modal tạo Playlist */}
       {showModal && (
         <div className="modal-overlay" onClick={() => setShowModal(false)}>

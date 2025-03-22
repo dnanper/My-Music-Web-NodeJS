@@ -136,7 +136,7 @@ export default function MusicLibrary() {
 
             {/* Nút Thêm vào Playlist */}
             <button
-              className="add-playlist-button"
+              className="add-to-playlist-button"
               onClick={(e) => {
                 e.stopPropagation();
                 setSelectedSong(song.id);

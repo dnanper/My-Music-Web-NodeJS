@@ -99,7 +99,7 @@
   transform: scale(1.2);
 }
 
-.add-playlist-button {
+.add-to-playlist-button {
   background: none;
   border: none;
   cursor: pointer;
@@ -110,7 +110,7 @@
   left: 2px; /* Đặt sang phải */
 }
 
-.add-playlist-button:hover {
+.add-to-playlist-button:hover {
   color: #e81ada;
 }
 
@@ -118,7 +118,7 @@
   transition: transform 0.2s ease-in-out;
 }
 
-.add-playlist-button:hover .playlist-icon {
+.add-to-playlist-button:hover .playlist-icon {
   transform: scale(1.2);
 }
 
