@@ -1,0 +1,105 @@
+.global-audio-player {
+  /* position: fixed; */
+  bottom: 0;
+  right: 0;
+  width: 3%; /* Điều chỉnh để mở rộng sang bên phải */
+  height: 98.7%;
+  background: linear-gradient(
+    180deg,
+    #e99d72,
+    #aee972,
+    #1e7380,
+    #801e1e,
+    #1e7380,
+    #aee972,
+    #e99d72
+  );
+  /* display: flex;
+  align-items: right;
+  justify-content: right; */
+  padding: 0px 0px 10px 10px;
+  border-radius: 20px 0 0 0;
+  transition: width 0.3s ease;
+}
+
+.control-button {
+  background: none;
+  /* padding: px; */
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+  margin-top: 40px;
+  margin-bottom: 10px;
+  /* margin-: 0px; */
+  /* margin-left: px; */
+  color: rgb(107, 98, 98);
+  transition: transform 0.2s ease-in-out;
+  margin-left: -5px;
+}
+
+.control-button:hover {
+  transform: scale(1.2);
+  background-color: transparent;
+}
+
+.progress-container {
+  width: 15px;
+  height: 500px;
+  background: rgb(161, 160, 160);
+  border-radius: 5px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  margin-left: 10px;
+  margin-bottom: 30px;
+}
+
+.progress {
+  width: 100%;
+  height: 0%;
+  background: rgb(74, 8, 90);
+  border-radius: 5px;
+  position: absolute;
+  bottom: 0;
+  transition: height 0.2s ease-in-out;
+}
+
+.volume-slider-container {
+  display: flex;
+  align-items: center;
+  height: 100px; /* Điều chỉnh theo nhu cầu */
+  background-color: transparent;
+  border: 0px;
+}
+
+.volume-slider {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 8px; /* Độ rộng slider */
+  height: 100px; /* Chiều cao slider */
+  background-color: transparent;
+  writing-mode: vertical-lr; /* Giúp trình duyệt hiểu slider dọc */
+  direction: rtl; /* Đảo chiều cho đúng hướng */
+  border: 0px;
+  margin-left: 3px;
+}
+
+/* Track (thanh chạy nền) */
+.volume-slider::-webkit-slider-runnable-track {
+  width: 11px;
+  height: 100px;
+  background: rgb(69, 12, 102);
+  border-radius: 4px;
+}
+
+/* Thumb (nút kéo) */
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 11px;
+  height: 11px;
+  background: rgb(233, 229, 229);
+  border-radius: 50%;
+  cursor: pointer;
+  margin-right: 5px;
+}

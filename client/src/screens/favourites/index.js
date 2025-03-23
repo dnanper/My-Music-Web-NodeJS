@@ -3,7 +3,7 @@ import API from "../../API";
 import { FaMusic, FaHeart, FaRegHeart } from "react-icons/fa";
 import "./favour.css";
 
-export default function Favorites() {
+export default function Favorites({ onGlobalSongClick }) {
   const [songs, setSongs] = useState([]);
   const [favourites, setFavourites] = useState(new Set());
   const userId = 1;
@@ -42,6 +42,10 @@ export default function Favorites() {
 
   const favouriteSongs = songs.filter((song) => favourites.has(song.id));
 
+  const playSong = (id) => {
+    onGlobalSongClick(id);
+  };
+
   return (
     <div className="screen-container">
       <div className="favour-body">
@@ -49,7 +53,11 @@ export default function Favorites() {
           <p>Không có bài hát yêu thích nào.</p>
         ) : (
           favouriteSongs.map((song) => (
-            <div className="playlist-card" key={song.id}>
+            <div
+              className="playlist-card"
+              key={song.id}
+              onClick={() => playSong(song.id)}
+            >
               {song.image ? (
                 <img
                   src={song.image}

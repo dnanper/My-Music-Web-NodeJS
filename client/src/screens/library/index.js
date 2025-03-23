@@ -10,7 +10,7 @@ import {
 } from "react-icons/fa";
 import "./library.css";
 
-export default function MusicLibrary() {
+export default function MusicLibrary({ onGlobalSongClick }) {
   const [songs, setSongs] = useState([]);
   const [favourites, setFavourites] = useState(new Set());
   const [playlists, setPlaylists] = useState([]);
@@ -44,7 +44,8 @@ export default function MusicLibrary() {
   }, []);
 
   const playSong = (id) => {
-    // navigate("/player", { state: { id: id } });
+    console.log("Chọn bài hát:", id);
+    onGlobalSongClick(id);
   };
 
   const downloadSong = (songId, title) => {
@@ -76,7 +77,10 @@ export default function MusicLibrary() {
           alert("Bài hát đã được thêm vào playlist!");
           setSelectedSong(null);
         })
-        .catch((error) => console.error("Lỗi khi thêm vào playlist:", error));
+        .catch((error) => {
+          // console.error("Lỗi khi thêm vào playlist:", error)
+          alert("Hiện đã tồn tại bài hát trong playlist!");
+        });
     }
   };
 

@@ -6,6 +6,7 @@ export function MusicProvider({ children }) {
   const [tracks, setTracks] = useState([]);
   const [currentTrack, setCurrentTrack] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isGlobalPlaying, setIsGlobalPlaying] = useState(false);
 
   return (
     <MusicContext.Provider
@@ -16,6 +17,8 @@ export function MusicProvider({ children }) {
         setCurrentTrack,
         currentIndex,
         setCurrentIndex,
+        isGlobalPlaying,
+        setIsGlobalPlaying,
       }}
     >
       {children}
