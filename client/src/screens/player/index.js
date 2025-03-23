@@ -20,9 +20,14 @@ export default function Player() {
   const [relatedSongs, setRelatedSongs] = useState([]);
 
   useEffect(() => {
-    if (tracks.length === 0 && location.state?.id && location.state?.user_id) {
-      API.getPlaylist(location.state.user_id, location.state.id)
+    console.log("Player location:", location);
+    const playlistId = location.state?.playlistId;
+    const userId = location.state?.userId;
+    if (tracks.length === 0 && playlistId && userId) {
+      // console.log("Loading playlist:", location.state.id);
+      API.getPlaylist(userId, playlistId)
         .then((res) => {
+          console.log("a", res);
           if (Array.isArray(res)) {
             setTracks(res);
             setCurrentTrack(res.length > 0 ? res[0] : null);
@@ -74,6 +79,25 @@ export default function Player() {
     }
   }, [currentTrack]);
 
+  const handleRemoveTrack = (songId) => {
+    const playlistId = location.state?.playlistId;
+    const userId = location.state?.userId;
+
+    if (!userId || !playlistId) {
+      console.error("Missing playlist or user information");
+      console.error("location.state:", location.state);
+      return;
+    }
+
+    API.removeSong(userId, playlistId, songId)
+      .then(() => {
+        setTracks((prevTracks) =>
+          prevTracks.filter((track) => track.id !== songId)
+        );
+      })
+      .catch((error) => console.error("Error removing song:", error));
+  };
+
   return (
     <div className="screen-container flex">
       <div className="left-player-body">
@@ -105,7 +129,11 @@ export default function Player() {
         ) : (
           <p>No song selected</p>
         )}
-        <Queue tracks={tracks} setCurrentIndex={setCurrentIndex} />
+        <Queue
+          tracks={tracks}
+          setCurrentIndex={setCurrentIndex}
+          removeTrack={handleRemoveTrack}
+        />
       </div>
     </div>
   );

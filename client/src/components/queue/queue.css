@@ -76,3 +76,26 @@
   overflow: hidden;
   white-space: nowrap;
 }
+
+.remove-track-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.remove-track-button:hover {
+  transform: scale(1.2);
+  background-color: rgba(216, 82, 82, 0.2);
+  border-radius: 50%;
+}
+
+.remove-track-button img {
+  width: 20px;
+  height: 20px;
+}
+
+.remove-track-icon {
+  transition: transform 0.2s ease-in-out;
+  color: #cc4949;
+}

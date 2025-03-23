@@ -30,7 +30,9 @@ export default function Playlist({ setSelectPlaylist }) {
       })
       .catch((error) => console.error("Lỗi tải playlist:", error));
     setSelectPlaylist(true);
-    navigate("/player");
+    navigate("/player", {
+      state: { playlistId: playlist.id, userId: playlist.user_id },
+    });
   };
 
   const handleCreatePlaylist = () => {
