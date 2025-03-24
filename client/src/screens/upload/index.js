@@ -39,21 +39,47 @@ export default function Upload() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (!title || !artist || !file) {
-      setMessage("Vui lòng nhập đầy đủ thông tin và chọn file .mp3!");
+    if (!file) {
+      setMessage("Vui lòng chọn file .mp3!");
       return;
     }
 
-    const content = { title, artist, file };
+    let finalTitle = title.trim();
+    let finalArtist = artist.trim();
+
+    if (!finalTitle || !finalArtist) {
+      const confirmFill = window.confirm(
+        "Tiêu đề hoặc nghệ sĩ chưa được nhập. Tự động lấy từ file?"
+      );
+      if (!confirmFill) {
+        setMessage("Vui lòng nhập đầy đủ thông tin!");
+        return;
+      }
+    }
+
+    const formData = new FormData();
+    formData.append("file", file); // Luôn có file
+
+    // Chỉ thêm title & artist nếu cả hai đều có giá trị
+    if (finalTitle) formData.append("title", finalTitle);
+    if (finalArtist) formData.append("artist", finalArtist);
+
     try {
-      await API.postSong(content);
+      setMessage("Đang tải lên...");
+      // console.log("Uploading:", formData);
+
+      await API.postSong(formData);
+
       setMessage("Tải lên thành công!");
       setTitle("");
       setArtist("");
       setFile(null);
       setFileName("Chưa có file nào được chọn");
     } catch (error) {
-      setMessage("Lỗi khi tải lên: " + error.message);
+      console.error("Upload failed:", error.response?.data || error.message);
+      setMessage(
+        "Lỗi khi tải lên: " + (error.response?.data?.message || error.message)
+      );
     }
   };
 
@@ -69,7 +95,7 @@ export default function Upload() {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Nhập tiêu đề bài hát"
-              required
+              // required
             />
           </div>
           <div>
@@ -79,7 +105,7 @@ export default function Upload() {
               value={artist}
               onChange={(e) => setArtist(e.target.value)}
               placeholder="Nhập tên nghệ sĩ"
-              required
+              // required
             />
           </div>
           <div>

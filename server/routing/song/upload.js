@@ -2,6 +2,7 @@ const db = require("../../db");
 const multer = require("multer");
 const fs = require("fs").promises;
 const path = require("path");
+const mm = require("music-metadata");
 
 const uploadDir = "uploads/songs";
 
@@ -28,19 +29,36 @@ module.exports = async (req, res) => {
     await new Promise((resolve, reject) => {
       upload(req, res, (err) => (err ? reject(err) : resolve()));
     });
-    const { artist, title } = req.body;
-    console.log("artist", artist);
-    console.log(req.file.originalname);
-    console.log("title", title);
-    if (!artist || !title || !req.file) {
-      return res.status(400).json({ error: "Thiếu thông tin bắt buộc" });
+    if (!req.file) {
+      return res.status(400).json({ error: "Thiếu file" });
     }
 
-    const filePath = "/uploads/songs/" + req.file.originalname;
+    // let { artist, title } = req.body;
+    // const filePath = "/uploads/songs/" + req.file.originalname;
+
+    let { artist, title } = req.body;
+    const filePath = path.join(uploadDir, req.file.originalname);
+    const filedbPath = "/uploads/songs/" + req.file.originalname;
     const query =
       "INSERT INTO songs (title, artist, file_path) VALUES (?, ?, ?)";
-
-    const [result] = await db.execute(query, [title, artist, filePath]);
+    try {
+      const metadata = await mm.parseFile(filePath);
+      console.log(metadata);
+      if (!title) {
+        title = metadata.common.title || "Unknown Title";
+      }
+      if (!artist) {
+        artist =
+          metadata.common.artist ||
+          metadata.common.albumartist ||
+          "Unknown Artist";
+      }
+    } catch (metaErr) {
+      console.error("Lỗi khi đọc metadata:", metaErr);
+      title = title || "Unknown Title";
+      artist = artist || "Unknown Artist";
+    }
+    const [result] = await db.execute(query, [title, artist, filedbPath]);
 
     res.status(200).json({
       message: "Upload thành công!",

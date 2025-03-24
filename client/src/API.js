@@ -8,11 +8,11 @@ var API = {
   getAllSong: function () {
     return this.api.get(`/song/`).then((response) => response.data);
   },
-  postSong: function (content) {
-    let formData = new FormData();
-    formData.append("title", content.title);
-    formData.append("artist", content.artist);
-    formData.append("file", content.file);
+  postSong: function (formData) {
+    // let formData = new FormData();
+    // formData.append("title", content.title);
+    // formData.append("artist", content.artist);
+    // formData.append("file", content.file);
     return this.api
       .post(`/song/upload`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
