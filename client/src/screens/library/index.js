@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import API from "../../API";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import {
   FaMusic,
   FaHeart,
   FaRegHeart,
   FaDownload,
   FaPlus,
+  FaTrash,
 } from "react-icons/fa";
 import "./library.css";
 
@@ -15,7 +16,7 @@ export default function MusicLibrary({ onGlobalSongClick }) {
   const [favourites, setFavourites] = useState(new Set());
   const [playlists, setPlaylists] = useState([]);
   const [selectedSong, setSelectedSong] = useState(null);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const userId = 1;
 
   // Fetch danh sách bài hát
@@ -84,6 +85,19 @@ export default function MusicLibrary({ onGlobalSongClick }) {
     }
   };
 
+  const deleteSong = (songId) => {
+    if (window.confirm("Bạn có chắc chắn muốn xóa bài hát này?")) {
+      API.deleteSong(songId)
+        .then(() => {
+          setSongs((prevSongs) =>
+            prevSongs.filter((song) => song.id !== songId)
+          );
+          alert("Bài hát đã được xóa thành công!");
+        })
+        .catch((error) => alert("Lỗi khi xóa bài hát: " + error.message));
+    }
+  };
+
   return (
     <div className="screen-container">
       <div className="library-body">
@@ -147,6 +161,16 @@ export default function MusicLibrary({ onGlobalSongClick }) {
               }}
             >
               <FaPlus className="playlist-icon" />
+            </button>
+            {/* Nút Xóa bài hát */}
+            <button
+              className="delete-song-button"
+              onClick={(e) => {
+                e.stopPropagation();
+                deleteSong(song.id);
+              }}
+            >
+              <FaTrash className="delete-song-icon" />
             </button>
           </div>
         ))}

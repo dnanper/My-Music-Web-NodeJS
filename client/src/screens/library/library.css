@@ -67,9 +67,19 @@
   right: 8px;
 }
 
+.favourite-button:hover {
+  background-color: transparent;
+}
+
 .fav-icon {
   font-size: 20px;
   color: #ccc;
+  transition: transform 0.2s ease-in-out;
+}
+
+.favourite-button:hover .fav-icon {
+  color: #5e4964;
+  transform: scale(1.2);
 }
 
 .fav-icon.active {
@@ -83,12 +93,13 @@
   color: #634ae2;
   font-size: 1.2rem;
   position: absolute;
-  bottom: 0px; /* Đặt xuống gần cạnh dưới */
+  bottom: -10px; /* Đặt xuống gần cạnh dưới */
   right: 2px; /* Đặt sang phải */
 }
 
 .download-button:hover {
-  color: #1a73e8;
+  color: #3f5a7e;
+  background-color: transparent;
 }
 
 .download-icon {
@@ -106,12 +117,13 @@
   color: #9a1131;
   font-size: 1.2rem;
   position: absolute;
-  bottom: 0px; /* Đặt xuống gần cạnh dưới */
+  bottom: -10px; /* Đặt xuống gần cạnh dưới */
   left: 2px; /* Đặt sang phải */
 }
 
 .add-to-playlist-button:hover {
   color: #e81ada;
+  background-color: transparent;
 }
 
 .playlist-icon {
@@ -119,6 +131,31 @@
 }
 
 .add-to-playlist-button:hover .playlist-icon {
+  transform: scale(1.2);
+}
+
+.delete-song-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #a82c37; /* Màu đỏ nổi bật */
+  font-size: 1.2rem;
+  position: absolute;
+  bottom: -10px; /* Đặt xuống gần cạnh dưới */
+  right: 12px; /* Canh giữa theo chiều ngang */
+  transform: translateX(-50%); /* Dịch ngược lại 50% để căn giữa */
+}
+
+.delete-song-button:hover {
+  background-color: transparent;
+  color: #ff0000;
+}
+
+.delete-song-icon {
+  transition: transform 0.2s ease-in-out;
+}
+
+.delete-song-button:hover .delete-song-icon {
   transform: scale(1.2);
 }
 
