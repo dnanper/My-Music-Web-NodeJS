@@ -85,7 +85,3 @@ npm start
 
 - Place music files in `server/uploads/songs/`.
 - Default images in `uploads/images/`.
-
-## License
-
-This project is licensed under the ISC License (see `server/package.json`).
